@@ -2,7 +2,7 @@ require 'appengine-rack'
 require 'app'
 
 AppEngine::Rack.configure_app(
-		:application => "hataraki-zakari", 
+		:application => "hogehoge", 
 		:version => 1
 	)
 
