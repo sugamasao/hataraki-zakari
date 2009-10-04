@@ -1,10 +1,11 @@
 require 'rubygems'
 require 'sinatra'
+require 'appengine-apis/datastore'
 require 'haml'
 require 'sass'
 
-# Java のスタティックなクラスを使う為には import しておく必要がある
 include Java
+import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 set :haml, {:format => :html5 } # default Haml format is :xhtml
@@ -14,20 +15,82 @@ set :public, File.dirname(__FILE__) + '/public'
 # css へのアクセスは sass を変換させる
 get '/*.css' do
   content_type 'text/css', :charset => 'utf-8'
-  css_name =  params[:splat][0]
+  css_name = params[:splat][0]
 
   # シンボルにしないとだめなので、無理矢理シンボル化させておく
   sass :"#{css_name}"
 end
 
-get '/' do
+# TOPは一旦サイトマップに
+get '/' do 
+  @title = "/"
+  @message = "TOP"
+  @body = <<BODY
+  <ul>
+    <li><a href="/google">Java APIの実装サンプル</a></li>
+    <li><a href="/register">登録画面</a></li>
+    <li>ここにサイトマップを書く</li>
+    <li>ここにサイトマップを書く</li>
+    <li></li>
+  </ul>
+BODY
+  haml :index
+end
+
+get '/admin/user_list' do
+  @title = "/"
+  @message = "TOP"
+  user = User.new
+  @users = user.search
+  haml :user_list
+end
+
+# registerでユーザ登録画面を表示。
+# もしユーザが存在した場合はログイン後TOPに飛ぶ
+# TODO googleでログインしていなかったらログイン画面を表示
+# TODO Keyが重複していた場合はUpdate画面に飛ぶとか
+get '/register' do
+  userService = UserServiceFactory.getUserService();
+  servlet = request.env["java.servlet_request"]
+  unless servlet.getUserPrincipal
+    redirect userService.createLoginURL(servlet.getRequestURI)
+  else
+    user = User.new
+    params[:name] = servlet.getUserPrincipal().getName()
+    params[:email] = userService.currentUser().getEmail()
+    @key = user.create(params)
+    haml :register
+  end
+end
+
+# 入力ページのexecute
+# ログインしてログイン後TOPへredirect
+# TODO 1000件以上入れて速度テスト
+post '/register/execute' do 
+  user = User.new
+  user.update(params)
+  redirect '/admin/user_list'
+end
+
+# ログイン後TOP
+# ログインしていなかった場合はregisterへリダイレクト
+get '/top' do 'TOP' end
+
+# 労働時間の確定
+# ログイン後TOPにリダイレクト 
+post '/record' do 'record' end
+
+# データの取得
+get '/get' do 'get' end
+
+get '/google' do
   @title = "GAE sample"
   @message = "GAE sample"
   @body = ''
   @body << '<ul>'
   @body << '<li><a href="/user_sample">Google アカウント Java API 概要のjRuby での実装サンプル</a></li>'
   @body << '</ul>'
-  haml :index
+  haml :google
 end
 
 get '/user_sample' do
@@ -67,6 +130,6 @@ get '/user_sample' do
     # ログインリンク
     @body = "<a href='#{userService.createLoginURL(servlet.getRequestURI)}'>login</a>"
   end
-  haml :index
+  haml :google
 end
 

@@ -1,21 +1,4 @@
-!!!
-
-%html{:lang => 'ja'}
-  %head
-    %meta{:charset => 'utf-8'}
-    %title= @title
-    %script{:type=>"text/javascript", :src=>"js/common.js"}
-    %script{:type=>"text/javascript", :src=>"http://www.google.com/jsapi"}
-    %script{:type=>"text/javascript"}
-      google.load("jquery", "1");
-    %link{:rel=>"stylesheet", :type=>"text/css", :href=>"common.css"}
-  %body
-    %h1= @title
-    %ul= @message
-    = @body
-  -# JavaScript は HTML の末尾に
-  :javascript
-    $(document).ready(function() {
-      /* HTMLをロードしたら init 処理を呼ぶ */
-    });
+%h1= @title
+%ul= @message
+= @body
 
