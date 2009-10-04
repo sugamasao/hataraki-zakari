@@ -1,0 +1,14 @@
+%h1= @title
+%ul= @message
+%table
+  %tr
+    %th ユーザ名
+    %th 職業
+    %th 職業タグ
+    %th 作成時間
+  - @users.each do |user|
+    %tr
+      %th= user[:nickname]
+      %th= user[:job]
+      %th= user[:jobtag]
+      %th= user[:created_on]
