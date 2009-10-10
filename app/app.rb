@@ -12,6 +12,7 @@ set :haml, {:format => :html5 } # default Haml format is :xhtml
 set :sass, {:style => :compressed } # default Sass style is :nested
 set :public, File.dirname(__FILE__) + '/public'
 
+#TODO userオブジェクトとuserのDB操作をわけたいよ
 before do
   @userService = UserServiceFactory.getUserService();
   @servlet = request.env["java.servlet_request"]
@@ -29,6 +30,21 @@ get '/*.css' do
   sass :"#{css_name}"
 end
 
+module App
+  def service(name)
+    Timeout.timeout(20) do
+      get "/#{name}/" do
+        yield params
+      end
+    end
+  rescue Timeout::Error
+  end
+end
+include App
+ 
+Dir["#{File.dirname(__FILE__)}/services/**/*.rb"].each { |service| load service }
+
+__END__
 # TOPは一旦サイトマップに
 get '/' do 
   @title = "/"
