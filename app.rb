@@ -12,6 +12,14 @@ set :haml, {:format => :html5 } # default Haml format is :xhtml
 set :sass, {:style => :compressed } # default Sass style is :nested
 set :public, File.dirname(__FILE__) + '/public'
 
+before do
+  @userService = UserServiceFactory.getUserService();
+  @servlet = request.env["java.servlet_request"]
+  if @servlet.getUserPrincipal
+    user = User.new
+  end
+end
+
 # css へのアクセスは sass を変換させる
 get '/*.css' do
   content_type 'text/css', :charset => 'utf-8'
@@ -29,6 +37,7 @@ get '/' do
   <ul>
     <li><a href="/google">Java APIの実装サンプル</a></li>
     <li><a href="/register">登録画面</a></li>
+    <li><a href="/admin/user_list">ユーザリスト</a></li>
     <li>ここにサイトマップを書く</li>
     <li>ここにサイトマップを書く</li>
     <li></li>
@@ -38,8 +47,8 @@ BODY
 end
 
 get '/admin/user_list' do
-  @title = "/"
-  @message = "TOP"
+  @title = "ユーザリスト"
+  @message = "ユーザリストだよー"
   user = User.new
   @users = user.search
   haml :user_list
@@ -50,15 +59,16 @@ end
 # TODO googleでログインしていなかったらログイン画面を表示
 # TODO Keyが重複していた場合はUpdate画面に飛ぶとか
 get '/register' do
-  userService = UserServiceFactory.getUserService();
-  servlet = request.env["java.servlet_request"]
-  unless servlet.getUserPrincipal
-    redirect userService.createLoginURL(servlet.getRequestURI)
+  unless @servlet.getUserPrincipal
+    redirect @userService.createLoginURL(@servlet.getRequestURI)
   else
     user = User.new
-    params[:name] = servlet.getUserPrincipal().getName()
-    params[:email] = userService.currentUser().getEmail()
-    @key = user.create(params)
+    params[:name] = @servlet.getUserPrincipal().getName()
+    params[:email] = @userService.currentUser().getEmail()
+    @key = user.getKey(params[:email])
+    u = user.find(@key)
+    redirect '/top' if u
+    user.create(params)
     haml :register
   end
 end
@@ -69,16 +79,22 @@ end
 post '/register/execute' do 
   user = User.new
   user.update(params)
-  redirect '/admin/user_list'
+  redirect '/top'
 end
 
 # ログイン後TOP
 # ログインしていなかった場合はregisterへリダイレクト
-get '/top' do 'TOP' end
+get '/top' do
+  haml :top
+end
 
 # 労働時間の確定
 # ログイン後TOPにリダイレクト 
-post '/record' do 'record' end
+post '/record' do
+  user = User.new
+
+ 'record' 
+end
 
 # データの取得
 get '/get' do 'get' end

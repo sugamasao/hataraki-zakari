@@ -1,7 +1,19 @@
 require 'appengine-apis/datastore'
+require 'lib/mojibake'
 require 'digest/md5'
 include Java
 class User
+  def getKey(email)
+    return Digest::MD5.new.update(email).to_s
+  end
+  def find(key)
+    k = AppEngine::Datastore::Key.from_path('User', key)
+    begin
+      return AppEngine::Datastore.get(k)
+    rescue AppEngine::Datastore::EntityNotFoune => e
+      return nil
+    end
+  end
   def search
     query = AppEngine::Datastore::Query.new('User')
     @users = query.fetch
@@ -10,10 +22,9 @@ class User
     else
       'username'
     end
-
   end
   def create(params)
-    key = Digest::MD5.new.update(params[:email]).to_s
+    key = getKey(params[:email])
     user = AppEngine::Datastore::Entity.new('User', key)
     user[:name] = params[:name]
     user[:created_on] = Time.now
@@ -27,9 +38,10 @@ class User
     rescue AppEngine::Datastore::EntityNotFound => e
       user = {}
     end
-    user[:job] = params[:job]
-    user[:nickname] = params[:nickname]
-    user[:jobtag] = params[:jobtag]
+    params.each do |k, v|
+      next if k == :key
+      user[k] = v
+    end
     AppEngine::Datastore.put(user)
   end
 end

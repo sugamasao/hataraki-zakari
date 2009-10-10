@@ -1,6 +1,6 @@
 require 'appengine-rack'
-require 'app'
 require 'lib/user'
+require 'app'
 
 AppEngine::Rack.configure_app(
 		:application => "hogehoge", 

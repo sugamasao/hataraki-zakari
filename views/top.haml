@@ -1,0 +1,22 @@
+%h1= @title
+%form{ :method => 'post', :action => '/record' }
+  %div
+    %select{ :name => 'year' }
+      %option{ :value => '2009' } 2009年
+      %option{ :value => '2010' } 2010年
+    %select{ :name => 'month' }
+      %option{ :value => '01' } 1月
+      %option{ :value => '02' } 3月
+      %option{ :value => '03' } 4月
+      %option{ :value => '04' } 5月
+      %option{ :value => '05' } 6月
+      %option{ :value => '06' } 7月
+      %option{ :value => '08' } 8月
+      %option{ :value => '09' } 9月
+      %option{ :value => '10' } 10月
+      %option{ :value => '11' } 11月
+      %option{ :value => '12' } 12月
+    %label{ :for => 'work' } はたらき時間
+    %input{ :type => 'text', :name => 'work'}
+    %input{ :type => 'hidden', :name => 'key', :value => @key }
+    %input{ :type => 'submit', :name => 'submit', :value => '登録' }
