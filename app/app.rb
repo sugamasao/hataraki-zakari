@@ -5,7 +5,7 @@ require 'haml'
 require 'sass'
 
 require 'user'
-require 'utils/logging'
+require 'utils/logger'
 
 include Java
 import com.google.appengine.api.users.UserService;
@@ -43,8 +43,8 @@ get '/' do
 @logger = Utils::Logger.new
 @logger.warn("aaaaaaa")
 @logger.warn()
-@logger.warn("aaaaaaa", my_logger)
-@logger.warn("aaaaaaa", 1, 2, my_logger)
+@logger.warn("aaaaaaa", @logger)
+@logger.warn("aaaaaaa", 1, 2, @title)
 #############################################
 
 
