@@ -1,3 +1,6 @@
+# vim:fileencoding=utf-8$
+require 'com/google/appengine/api/users'
+
 module HatarakiZakari
   class App < Sinatra::Default
     set :haml, {:format => :html5 } # default Haml format is :xhtml
@@ -9,10 +12,6 @@ module HatarakiZakari
 
     include HatarakiZakari
     include HatarakiZakari::Helpers
-
-    include Java
-    import com.google.appengine.api.users.UserService;
-    import com.google.appengine.api.users.UserServiceFactory;
 
     before do
       @userService = UserServiceFactory.getUserService();
