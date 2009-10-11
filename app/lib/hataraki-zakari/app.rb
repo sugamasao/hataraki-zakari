@@ -28,6 +28,7 @@ module HatarakiZakari
     end
 
     get '/' do
+      HatarakiZakari::log.warn('hogehogehoge')
       @body = <<BODY
       <ul>
         <li><a href="/google">Java APIの実装サンプル</a></li>

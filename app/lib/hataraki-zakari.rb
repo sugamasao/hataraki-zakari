@@ -7,6 +7,8 @@ require 'haml'
 require 'sass'
 require 'digest/md5'
 
+require 'utils/logger'
+require 'appengine/datastore'
 require 'hataraki-zakari/models'
 require 'hataraki-zakari/helpers'
 require 'hataraki-zakari/user'
@@ -25,6 +27,7 @@ module HatarakiZakari
   end
 
   def self.log
+    @logger ||= Utils::Logger.new
   end
 
   def self.logger
