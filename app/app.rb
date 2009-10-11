@@ -4,6 +4,9 @@ require 'appengine-apis/datastore'
 require 'haml'
 require 'sass'
 
+require 'user'
+require 'utils/logger'
+
 include Java
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -49,6 +52,18 @@ __END__
 get '/' do 
   @title = "/"
   @message = "TOP"
+
+#############################################
+# logger sample です
+# レベルは debug, info, warn, fatal, error
+@logger = Utils::Logger.new
+@logger.warn("aaaaaaa")
+@logger.warn()
+@logger.warn("aaaaaaa", @logger)
+@logger.warn("aaaaaaa", 1, 2, @title)
+#############################################
+
+
   @body = <<BODY
   <ul>
     <li><a href="/google">Java APIの実装サンプル</a></li>
