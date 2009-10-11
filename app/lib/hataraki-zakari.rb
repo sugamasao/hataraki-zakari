@@ -1,11 +1,35 @@
+$:.unshift File.expand_path(File.dirname(__FILE__))
+
 require 'rubygems'
-require 'sinatra'
+require 'sinatra/base'
 require 'appengine-apis/datastore'
 require 'haml'
 require 'sass'
 
-require 'user'
-require 'utils/logger'
+require 'hataraki-zakari/app'
+
+
+module HatarakiZakari
+  def self.new
+  end
+
+  def self.default_configuration
+  end
+
+  def self.config
+  end
+
+  def self.log
+  end
+
+  def self.logger
+  end
+end
+
+
+__END__
+#require 'user'
+#require 'lib/utils/logger'
 
 include Java
 import com.google.appengine.api.users.UserService;
@@ -22,7 +46,17 @@ before do
   if @servlet.getUserPrincipal
     user = User.new
   end
+  #############################################
+  # logger sample です
+  # レベルは debug, info, warn, fatal, error
+#  @logger = Utils::Logger.new
+#  @logger.warn("aaaaaaa")
+#  @logger.warn()
+#  @logger.warn("aaaaaaa", @logger)
+#  @logger.warn("aaaaaaa", 1, 2, @title)
+  #############################################
 end
+
 
 # css へのアクセスは sass を変換させる
 get '/*.css' do
@@ -33,7 +67,7 @@ get '/*.css' do
   sass :"#{css_name}"
 end
 
-module App
+module Dispatch
   def service(name)
     Timeout.timeout(20) do
       get "/#{name}/" do
@@ -43,25 +77,14 @@ module App
   rescue Timeout::Error
   end
 end
-include App
+include Dispatch
  
 Dir["#{File.dirname(__FILE__)}/services/**/*.rb"].each { |service| load service }
 
-__END__
 # TOPは一旦サイトマップに
 get '/' do 
   @title = "/"
   @message = "TOP"
-
-#############################################
-# logger sample です
-# レベルは debug, info, warn, fatal, error
-@logger = Utils::Logger.new
-@logger.warn("aaaaaaa")
-@logger.warn()
-@logger.warn("aaaaaaa", @logger)
-@logger.warn("aaaaaaa", 1, 2, @title)
-#############################################
 
 
   @body = <<BODY
@@ -76,6 +99,8 @@ get '/' do
 BODY
   haml :index
 end
+
+__END__
 
 get '/admin/user_list' do
   @title = "ユーザリスト"
