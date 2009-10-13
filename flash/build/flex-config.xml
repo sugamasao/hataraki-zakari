@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<flex-config>
+	<target-player>10.0.0</target-player>
+	<compiler>
+		<define>
+			<name>CONFIG::release</name>
+			<value>true</value>
+		</define>
+		<define>
+			<name>CONFIG::debugging</name>
+			<value>false</value>
+		</define>
+	</compiler>
+</flex-config>
+
