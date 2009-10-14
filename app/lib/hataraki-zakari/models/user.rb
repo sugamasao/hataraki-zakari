@@ -1,6 +1,10 @@
 module HatarakiZakari
   module Models
     class User
+      @@model = nil
+      def self.initialize
+        @@model ||= new
+      end
       def find(key)
         k = AppEngine::Datastore::Key.from_path('User', key)
         puts k

@@ -1,15 +1,12 @@
 module HatarakiZakari
   class User
-    attr_accessor :data
-    def initialize(key=nil)
-      @data = HatarakiZakari::Models::User.new.find(key) if key
-    end
-    def hoge
-      'hoge'
+    attr_accessor :model
+    def initialize
+      @model = HatarakiZakari::Models::User.initialize
     end
     def create_user(key, params)
       p = { :name => params[:name]}
-      HatarakiZakari::Models::User.new.create(key, params)
+      @model.create(key, params)
     end
     #TODO userobjのupdateというふうにしたい
     def update_options(key, params)
@@ -18,7 +15,7 @@ module HatarakiZakari
         :job => params[:job],
         :jobtag => params[:jobtag]
       }
-      HatarakiZakari::Models::User.new.update(key, params)
+      @model.update(key, params)
     end
     #TODO validate
     def validate
