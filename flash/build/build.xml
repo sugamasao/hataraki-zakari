@@ -4,31 +4,21 @@
 		FlexAntを用いてAirのコンパイルを行います
 	</description>
 
-	<!-- Hudsonの提供する環境変数を設定(実際にはこのbuild.xmlでは使われない) -->
-	<property environment="env" />
-
-	<!-- 各種プロパティ定義 -->
+	<!-- 環境によって変更されるパスの設定 -->
+	<property name="FLEX_HOME" value="/opt/flex/flex_sdk_3.4.0.9271"/>
+	<property name="PMD_HOME" value="/opt/flex/flex-pmd-ant-task-1.0.RC4"/>
 
 	<!-- プロジェクトのベースディレクトリ定義 -->
 	<dirname property="XML_DIR" file="${ant.file}"/>
 	<property name="APP_ROOT" value="${XML_DIR}/../"/>
+	<property name="APP_SRC" value="${APP_ROOT}/src"/>
 	
-	<!-- FlexSDKのホーム -->
-	<property name="FLEX_HOME" value="/opt/flex/flex_sdk_3.4.0.9271"/>
-	
-	<!-- ASDOCのパス  -->
+	<!-- 各コマンドのパス設定 -->
 	<property name="ASDOC_EXE" value="${FLEX_HOME}/bin/asdoc"/>
 
-	<!-- ASDOC 出力先 -->
+	<!-- 出力先ディレクトリの設定  -->
+	<property name="BIN_OUTPUT" value="${APP_ROOT}/bin"/>
 	<property name="ASDOC_OUTPUT" value="${APP_ROOT}/asdoc"/>
-
-	<!-- SRC -->
-	<property name="APP_SRC" value="${APP_ROOT}/src"/>
-
-	<!-- FlexPMD PATH -->
-	<property name="PMD_HOME" value="/opt/flex/flex-pmd-ant-task-1.0.RC4"/>
-
-	<!-- FlexPMD PATH -->
 	<property name="PMD_OUTPUT" value="${APP_ROOT}/pmd"/>
 
 	<!-- アプリケーションの名前 -->
@@ -38,34 +28,20 @@
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"/>
 
 	<!-- FlexPMD タスクの定義 -->
-
 	<taskdef name="flexPmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" >
 		<classpath>
-		<pathelement location="${PMD_HOME}/as3-parser-1.0.RC4.jar"/>
-		<pathelement location="${PMD_HOME}/as3-parser-api-1.0.RC4.jar"/>
-		<pathelement location="${PMD_HOME}/as3-plugin-utils-1.0.RC4.jar"/>
-		<pathelement location="${PMD_HOME}/commons-lang-2.4.jar"/>
-		<pathelement location="${PMD_HOME}/flex-pmd-ant-task-1.0.RC4.jar"/>
-		<pathelement location="${PMD_HOME}/flex-pmd-core-1.0.RC4.jar"/>
-		<pathelement location="${PMD_HOME}/flex-pmd-files-1.0.RC4.jar"/>
-		<pathelement location="${PMD_HOME}/flex-pmd-command-line-1.0.RC4.jar"/>
-		<pathelement location="${PMD_HOME}/flex-pmd-ruleset-1.0.RC4.jar"/>
-		<pathelement location="${PMD_HOME}/flex-pmd-ruleset-api-1.0.RC4.jar"/>
-		<pathelement location="${PMD_HOME}/plexus-utils-1.0.2.jar"/>
-		<pathelement location="${PMD_HOME}/pmd-4.2.2.jar"/>
-<!--
-			<pathelement location="../libs/ext/flexpmd/as3-parser-1.0.RC3.jar"/>
-			<pathelement location="../libs/ext/flexpmd/as3-parser-api-1.0.RC3.jar"/>
-			<pathelement location="../libs/ext/flexpmd/as3-plugin-utils-1.0.RC3.jar"/>
-			<pathelement location="../libs/ext/flexpmd/commons-lang-2.4.jar"/>
-			<pathelement location="../libs</classpath>/ext/flexpmd/flex-pmd-ant-task-1.0.RC3.jar"/>
-			<pathelement location="../libs/ext/flexpmd/flex-pmd-core-1.0.RC3.jar"/>
-			<pathelement location="../libs/ext/flexpmd/flex-pmd-files-1.0.RC3.jar"/>
-			<pathelement location="../libs/ext/flexpmd/flex-pmd-ruleset-1.0.RC3.jar"/>
-			<pathelement location="../libs/ext/flexpmd/flex-pmd-ruleset-api-1.0.RC3.jar"/>
-			<pathelement location="../libs/ext/flexpmd/plexus-utils-1.0.2.jar"/>
-			<pathelement location="../libs/ext/flexpmd/pmd-4.2.2.jar"/>
--->
+			<pathelement location="${PMD_HOME}/as3-parser-1.0.RC4.jar"/>
+			<pathelement location="${PMD_HOME}/as3-parser-api-1.0.RC4.jar"/>
+			<pathelement location="${PMD_HOME}/as3-plugin-utils-1.0.RC4.jar"/>
+			<pathelement location="${PMD_HOME}/commons-lang-2.4.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-ant-task-1.0.RC4.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-core-1.0.RC4.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-files-1.0.RC4.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-command-line-1.0.RC4.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-ruleset-1.0.RC4.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-ruleset-api-1.0.RC4.jar"/>
+			<pathelement location="${PMD_HOME}/plexus-utils-1.0.2.jar"/>
+			<pathelement location="${PMD_HOME}/pmd-4.2.2.jar"/>
 		</classpath>
 	</taskdef>
 
@@ -74,8 +50,8 @@
 
 	<!-- mxmlcの実行 -->
 	<target name="build">
-		<mkdir dir="${APP_ROOT}/bin" />
-		<mxmlc file="${APP_ROOT}/src/${APP_NAME}.mxml" output="${APP_ROOT}/bin/${APP_NAME}.swf">
+		<mkdir dir="${BIN_OUTPUT}" />
+		<mxmlc file="${APP_SRC}/${APP_NAME}.mxml" output="${BIN_OUTPUT}/${APP_NAME}.swf">
 			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
 			<load-config filename="${APP_ROOT}/build/flex-config.xml"/>
 			<source-path path-element="${FLEX_HOME}/frameworks"/>
@@ -84,7 +60,7 @@
 
 	<!-- cleanの実行 -->
 	<target name="clean">
-		<delete dir="${APP_ROOT}/bin" failOnError="false" includeEmptyDirs="true" />
+		<delete dir="${BIN_OUTPUT}" failOnError="false" includeEmptyDirs="true" />
 		<delete dir="${ASDOC_OUTPUT}" failOnError="false" includeEmptyDirs="true" />
 		<delete dir="${PMD_OUTPUT}" failOnError="false" includeEmptyDirs="true" />
 	</target>
