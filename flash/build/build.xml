@@ -15,12 +15,62 @@
 	
 	<!-- FlexSDKのホーム -->
 	<property name="FLEX_HOME" value="/opt/flex/flex_sdk_3.4.0.9271"/>
+	
+	<!-- ASDOCのパス  -->
+	<property name="ASDOC_EXE" value="${FLEX_HOME}/bin/asdoc"/>
+
+	<!-- ASDOC 出力先 -->
+	<property name="ASDOC_OUTPUT" value="${APP_ROOT}/asdoc"/>
+
+	<!-- SRC -->
+	<property name="APP_SRC" value="${APP_ROOT}/src"/>
+
+	<!-- FlexPMD PATH -->
+	<property name="PMD_HOME" value="/opt/flex/flex-pmd-ant-task-1.0.RC4"/>
+
+	<!-- FlexPMD PATH -->
+	<property name="PMD_OUTPUT" value="${APP_ROOT}/pmd"/>
 
 	<!-- アプリケーションの名前 -->
 	<property name="APP_NAME" value="HatarakiZakari"/>
 
 	<!-- flex用Antタスクを読み込む -->
 	<taskdef resource="flexTasks.tasks" classpath="${FLEX_HOME}/ant/lib/flexTasks.jar"/>
+
+	<!-- FlexPMD タスクの定義 -->
+
+	<taskdef name="flexPmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" >
+		<classpath>
+		<pathelement location="${PMD_HOME}/as3-parser-1.0.RC4.jar"/>
+		<pathelement location="${PMD_HOME}/as3-parser-api-1.0.RC4.jar"/>
+		<pathelement location="${PMD_HOME}/as3-plugin-utils-1.0.RC4.jar"/>
+		<pathelement location="${PMD_HOME}/commons-lang-2.4.jar"/>
+		<pathelement location="${PMD_HOME}/flex-pmd-ant-task-1.0.RC4.jar"/>
+		<pathelement location="${PMD_HOME}/flex-pmd-core-1.0.RC4.jar"/>
+		<pathelement location="${PMD_HOME}/flex-pmd-files-1.0.RC4.jar"/>
+		<pathelement location="${PMD_HOME}/flex-pmd-command-line-1.0.RC4.jar"/>
+		<pathelement location="${PMD_HOME}/flex-pmd-ruleset-1.0.RC4.jar"/>
+		<pathelement location="${PMD_HOME}/flex-pmd-ruleset-api-1.0.RC4.jar"/>
+		<pathelement location="${PMD_HOME}/plexus-utils-1.0.2.jar"/>
+		<pathelement location="${PMD_HOME}/pmd-4.2.2.jar"/>
+<!--
+			<pathelement location="../libs/ext/flexpmd/as3-parser-1.0.RC3.jar"/>
+			<pathelement location="../libs/ext/flexpmd/as3-parser-api-1.0.RC3.jar"/>
+			<pathelement location="../libs/ext/flexpmd/as3-plugin-utils-1.0.RC3.jar"/>
+			<pathelement location="../libs/ext/flexpmd/commons-lang-2.4.jar"/>
+			<pathelement location="../libs</classpath>/ext/flexpmd/flex-pmd-ant-task-1.0.RC3.jar"/>
+			<pathelement location="../libs/ext/flexpmd/flex-pmd-core-1.0.RC3.jar"/>
+			<pathelement location="../libs/ext/flexpmd/flex-pmd-files-1.0.RC3.jar"/>
+			<pathelement location="../libs/ext/flexpmd/flex-pmd-ruleset-1.0.RC3.jar"/>
+			<pathelement location="../libs/ext/flexpmd/flex-pmd-ruleset-api-1.0.RC3.jar"/>
+			<pathelement location="../libs/ext/flexpmd/plexus-utils-1.0.2.jar"/>
+			<pathelement location="../libs/ext/flexpmd/pmd-4.2.2.jar"/>
+-->
+		</classpath>
+	</taskdef>
+
+	<!-- 全部入り動作  -->
+	<target name="all" depends="clean,build,document,pmd" description="full build of project"/>
 
 	<!-- mxmlcの実行 -->
 	<target name="build">
@@ -34,6 +84,28 @@
 
 	<!-- cleanの実行 -->
 	<target name="clean">
-		<delete dir="${APP_ROOT}/bin" />
+		<delete dir="${APP_ROOT}/bin" failOnError="false" includeEmptyDirs="true" />
+		<delete dir="${ASDOC_OUTPUT}" failOnError="false" includeEmptyDirs="true" />
+		<delete dir="${PMD_OUTPUT}" failOnError="false" includeEmptyDirs="true" />
 	</target>
+
+	<!-- asdocの実行 -->
+	<target name="document">
+		<mkdir dir="${ASDOC_OUTPUT}" />
+		<exec executable="${ASDOC_EXE}" failOnError="false">
+			<arg line='-source-path ${APP_SRC} ${FLEX_HOME}/frameworks/'/>
+			<arg line='-doc-sources ${APP_SRC}'/>
+			<arg line='-window-title "${APP_NAME}"'/>
+			<arg line='-output ${ASDOC_OUTPUT}'/>
+		</exec>
+	</target>
+
+	<!-- flex-pmd -->
+	<target name="pmd">
+		<mkdir dir="${PMD_OUTPUT}" />
+		<flexPmd
+			sourceDirectory="${APP_SRC}"
+			outputDirectory="${PMD_OUTPUT}" />
+	</target>
+
 </project>
