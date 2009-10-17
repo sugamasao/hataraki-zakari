@@ -1,5 +1,3 @@
-$:.unshift File.expand_path(File.dirname(__FILE__))
-
 require 'rubygems'
 require 'sinatra/base'
 require 'appengine-apis/datastore'
@@ -8,7 +6,9 @@ require 'sass'
 require 'digest/md5'
 
 require 'utils/logger'
+require 'com/google/appengine/api/users'
 require 'appengine/datastore'
+
 require 'hataraki-zakari/models'
 require 'hataraki-zakari/helpers'
 require 'hataraki-zakari/user'
@@ -20,17 +20,14 @@ module HatarakiZakari
   def self.new
   end
 
-  def self.default_configuration
+  def default_configuration
   end
 
-  def self.config
+  def config
   end
 
-  def self.log
+  def log
     @logger ||= Utils::Logger.new
-  end
-
-  def self.logger
   end
 end
 __END__
