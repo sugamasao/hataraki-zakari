@@ -57,7 +57,7 @@
 		<mkdir dir="${BIN_OUTPUT}" />
 		<mxmlc file="${APP_SRC}/${APP_NAME}.mxml" output="${BIN_OUTPUT}/${APP_NAME}.swf">
 			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
-			<load-config filename="${APP_ROOT}/build/flex-config.xml"/>
+			<load-config filename="${APP_ROOT}/build/${APP_NAME}.xml"/>
 			<source-path path-element="${FLEX_HOME}/frameworks"/>
 		</mxmlc>
 	</target>
@@ -67,7 +67,7 @@
 		<mkdir dir="${BIN_OUTPUT}" />
 		<mxmlc file="${APP_SRC}/${APP_NAME}.mxml" output="${BIN_OUTPUT}/${APP_NAME}.swf">
 			<load-config filename="${FLEX_HOME}/frameworks/flex-config.xml"/>
-			<load-config filename="${APP_ROOT}/build/flex-config.xml"/>
+			<load-config filename="${APP_ROOT}/build/${APP_NAME}.xml"/>
 			<define name="CONFIG::DEBUG" value="true" />
 			<source-path path-element="${FLEX_HOME}/frameworks"/>
 		</mxmlc>
