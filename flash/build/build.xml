@@ -6,7 +6,8 @@
 
 	<!-- 環境によって変更されるパスの設定 -->
 	<property name="FLEX_HOME" value="/opt/flex/flex_sdk_3.4.0.9271"/>
-	<property name="PMD_HOME" value="/opt/flex/flex-pmd-ant-task-1.0.RC4"/>
+	<property name="PMD_VER" value="1.0.RC4"/>
+	<property name="PMD_HOME" value="/opt/flex/flex-pmd-ant-task-${PMD_VER}"/>
 
 	<!-- プロジェクトのベースディレクトリ定義 -->
 	<dirname property="XML_DIR" file="${ant.file}"/>
@@ -30,16 +31,16 @@
 	<!-- FlexPMD タスクの定義 -->
 	<taskdef name="flexPmd" classname="com.adobe.ac.pmd.ant.FlexPmdAntTask" >
 		<classpath>
-			<pathelement location="${PMD_HOME}/as3-parser-1.0.RC4.jar"/>
-			<pathelement location="${PMD_HOME}/as3-parser-api-1.0.RC4.jar"/>
-			<pathelement location="${PMD_HOME}/as3-plugin-utils-1.0.RC4.jar"/>
+			<pathelement location="${PMD_HOME}/as3-parser-${PMD_VER}.jar"/>
+			<pathelement location="${PMD_HOME}/as3-parser-api-${PMD_VER}.jar"/>
+			<pathelement location="${PMD_HOME}/as3-plugin-utils-${PMD_VER}.jar"/>
 			<pathelement location="${PMD_HOME}/commons-lang-2.4.jar"/>
-			<pathelement location="${PMD_HOME}/flex-pmd-ant-task-1.0.RC4.jar"/>
-			<pathelement location="${PMD_HOME}/flex-pmd-core-1.0.RC4.jar"/>
-			<pathelement location="${PMD_HOME}/flex-pmd-files-1.0.RC4.jar"/>
-			<pathelement location="${PMD_HOME}/flex-pmd-command-line-1.0.RC4.jar"/>
-			<pathelement location="${PMD_HOME}/flex-pmd-ruleset-1.0.RC4.jar"/>
-			<pathelement location="${PMD_HOME}/flex-pmd-ruleset-api-1.0.RC4.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-ant-task-${PMD_VER}.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-core-${PMD_VER}.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-files-${PMD_VER}.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-command-line-${PMD_VER}.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-ruleset-${PMD_VER}.jar"/>
+			<pathelement location="${PMD_HOME}/flex-pmd-ruleset-api-${PMD_VER}.jar"/>
 			<pathelement location="${PMD_HOME}/plexus-utils-1.0.2.jar"/>
 			<pathelement location="${PMD_HOME}/pmd-4.2.2.jar"/>
 		</classpath>
