@@ -31,7 +31,7 @@ module HatarakiZakari
         <li><a href="/google">Java APIの実装サンプル</a></li>
         <li><a href="/register">登録画面</a></li>
         <li><a href="/admin/user_list">ユーザリスト</a></li>
-        <li><a href="/top">TOP</a>く</li>
+        <li><a href="/top">TOP</a></li>
         <li>ここにサイトマップを書く</li>
         <li></li>
       </ul>
@@ -51,6 +51,7 @@ BODY
     end
 
     post '/register/execute' do
+      authorize
       user = HatarakiZakari::User.new
       user.update_profile(getKey, params)
       redirect '/top'
@@ -64,6 +65,7 @@ BODY
     end
 
     get '/top' do
+      authorize
       user = HatarakiZakari::User.new
       @key = getKey
       @user = user.find_user(getKey)
@@ -73,6 +75,7 @@ BODY
     # 労働時間の確定
     # ログイン後TOPにリダイレクト 
     post '/record' do
+      authorize
       user = HatarakiZakari::User.new
       user.update_worktime(getKey, params)
       redirect '/top'
@@ -80,6 +83,7 @@ BODY
 
     # データの取得
     get '/get' do
+      authorize
       user = HatarakiZakari::User.new
       @user = user.find_user(getKey)
     end

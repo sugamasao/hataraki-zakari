@@ -5,11 +5,13 @@ module HatarakiZakari
       def self.initialize
         @@model ||= new
       end
+      def findKey(key)
+        #TODO keyはDataStoreのKeyStringのほうがいいかを検討
+        AppEngine::Datastore::Key.from_path('User', key)
+      end
       def find(key)
-        k = AppEngine::Datastore::Key.from_path('User', key)
-        puts k
         begin
-          return AppEngine::Datastore.get(k)
+          return AppEngine::Datastore.get(findKey(key))
         rescue AppEngine::Datastore::EntityNotFound => e
           return nil
         end
@@ -32,9 +34,8 @@ module HatarakiZakari
         AppEngine::Datastore.put(user)
       end
       def update(key, params)
-        key_object = AppEngine::Datastore::Key.from_path('User', key)
         begin
-          user = AppEngine::Datastore.get(key_object)
+          user = AppEngine::Datastore.get(findKey(key))
         rescue AppEngine::Datastore::EntityNotFound => e
           user = {}
         end
