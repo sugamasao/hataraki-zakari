@@ -1,16 +1,21 @@
 module HatarakiZakari
   class User
     attr_accessor :model
+
     def initialize
-      @model = HatarakiZakari::Models::User.initialize
+      @user = HatarakiZakari::Models::User.initialize
+      @worktime = HatarakiZakari::Models::WorkTime.initialize
     end
+
     def find_user(key)
-      @model.find(key)
+      @user.find(key)
     end
+
     def create_user(key, params)
       p = { :name => params[:name]}
-      @model.create(key, params)
+      @user.create(key, params)
     end
+
     #TODO userobjのupdateというふうにしたい
     def update_profile(key, params)
       p = {
@@ -18,15 +23,22 @@ module HatarakiZakari
         :job => params[:job],
         :jobtag => params[:jobtag]
       }
-      @model.update(key, p)
+      @user.update(key, p)
     end
+
+    def search_worktime(key)
+      @worktime.search(key, 'user')
+    end
+
     def update_worktime(key, params)
-      month = params[:year] + params[:month]
+      date = params[:year] + params[:month]
       p = {
-        month => params[:worktime]
+        :date => date,
+        :worktime => params[:worktime]
       }
-      @model.update(key, p)
+      @worktime.create_or_update(key, p, 'user')
     end
+
     #TODO validate
     def validate
     end

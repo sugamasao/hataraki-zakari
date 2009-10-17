@@ -19,7 +19,6 @@ module HatarakiZakari
     get '/*.css' do
       content_type 'text/css', :charset => 'utf-8'
       css_name = params[:splat][0]
-
       # シンボルにしないとだめなので、無理矢理シンボル化させておく
       sass :"#{css_name}"
     end
@@ -43,9 +42,9 @@ BODY
       authorize
       params[:name] = getName
       params[:email] = getEmail
-  #TODO getKeyの呼び出し箇所
       user = HatarakiZakari::User.new
-  #    redirect '/top' if user.data
+#TODO userが存在した場合はTOPにリダイレクト
+#      redirect '/top' if user.data
       user.create_user(getKey, params)
       haml :register
     end
@@ -68,7 +67,8 @@ BODY
       authorize
       user = HatarakiZakari::User.new
       @key = getKey
-      @user = user.find_user(getKey)
+      @user = user.find_user(@key)
+      @worktimes = user.search_worktime(@key)
       haml :top
     end
 
@@ -86,7 +86,9 @@ BODY
       authorize
       user = HatarakiZakari::User.new
       @user = user.find_user(getKey)
+      @worktimes = user.search_worktime(@key)
     end
+
   end
 end
 

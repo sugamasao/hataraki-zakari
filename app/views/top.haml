@@ -18,7 +18,14 @@
       %option{ :value => '12' } 12月
     %label{ :for => 'worktime' } はたらき時間
     %input{ :type => 'text', :name => 'worktime'}
-    %input{ :type => 'hidden', :name => 'key', :value => @key }
     %input{ :type => 'submit', :name => 'submit', :value => '登録' }
   %div
-    %p= @user
+    %ul
+      %li= @user[:name]
+      %li= @user[:nickname]
+      %li= @user[:job]
+      %li= @user[:jobtag]
+      %li= @user[:created_on]
+    %ul
+    - @worktimes.each do |w|
+      %li= w[:date].to_s + ': ' + w[:worktime].to_s
