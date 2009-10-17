@@ -3,11 +3,10 @@
 	<mx:Script>
 		<![CDATA[
 		import hataraki_zakari.utils.*;
-
 		private function init():void {
 			Logger.info("hoge");
 		}
 		]]>
-	</mx:Script> 
+	</mx:Script>
 </mx:Application>
 

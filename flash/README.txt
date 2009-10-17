@@ -14,6 +14,9 @@
  または、コードチェックやASDOCの生成も同時に行いたい場合は
  # ant all
  として下さい
+ なお、通常の build タスク、及び all タスクでは trace ログが出力されません。
+ 以下のように budeg-build 及び debug-all で trace ログが出力されるバイナリが出来ます。
+ # ant debug-build
 
 3. 生成された pmd.xml について
  以下のサイトでアップロードすると見れるようになります。
