@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <flex-config>
 	<target-player>10.0.0</target-player>
+	<warnings>true</warnings>
 	<compiler>
 		<define>
-			<name>CONFIG::release</name>
-			<value>true</value>
-		</define>
-		<define>
-			<name>CONFIG::debugging</name>
+			<name>CONFIG::DEBUG</name>
 			<value>false</value>
 		</define>
 	</compiler>
