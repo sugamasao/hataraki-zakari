@@ -40,7 +40,7 @@ module HatarakiZakari
           worktime[k] = v
         end
         worktime[:created_on] = Time.now.to_s
-        AppEngine::Datastore.put(transaction=current_transaction, worktime)
+        AppEngine::Datastore.put(worktime)
       end
 
     end
