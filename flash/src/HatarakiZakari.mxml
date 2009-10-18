@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" layout="absolute" applicationComplete="init()">
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:chart="hataraki_zakari.component.chart.*" layout="absolute" applicationComplete="init()">
+	<chart:LineChart id="lineChart" />
 	<mx:Script>
 		<![CDATA[
 		import hataraki_zakari.utils.*;
 		private function init():void {
-			Logger.info("hoge");
+		lineChart.draw();
+		Logger.info("HatarakiZakari init");
+
 		}
 		]]>
 	</mx:Script>

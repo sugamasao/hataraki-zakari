@@ -1,3 +1,4 @@
+appengine-generated/
 local_db.bin
 .DS_Store
 *.sw?
