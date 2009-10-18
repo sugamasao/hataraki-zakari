@@ -12,6 +12,7 @@ require 'appengine/datastore'
 require 'hataraki-zakari/models'
 require 'hataraki-zakari/helpers'
 require 'hataraki-zakari/user'
+require 'hataraki-zakari/job'
 
 require 'hataraki-zakari/app'
 

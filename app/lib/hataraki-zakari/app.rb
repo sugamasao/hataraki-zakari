@@ -43,9 +43,7 @@ BODY
       params[:name] = getName
       params[:email] = getEmail
       user = HatarakiZakari::User.new
-#TODO userが存在した場合はTOPにリダイレクト
-#      redirect '/top' if user.data
-      user.create_user(getKey, params)
+      user.create_user(getKey, params) unless user.find_user(getKey)
       haml :register
     end
 
@@ -68,7 +66,16 @@ BODY
       user = HatarakiZakari::User.new
       @key = getKey
       @user = user.find_user(@key)
+      redirect '/register' unless @user
       @worktimes = user.search_worktime(@key)
+      p = {
+        :job => @user[:job],
+        :jobtag => @user[:jobtag]
+      }
+      job = HatarakiZakari::Job.new
+      @job_worktimes = job.search_worktime(p)
+puts '********* job_worktime'
+puts @job_worktimes
       haml :top
     end
 
@@ -78,6 +85,14 @@ BODY
       authorize
       user = HatarakiZakari::User.new
       user.update_worktime(getKey, params)
+      profile = user.find_user(getKey)
+#TODO userにjobとjobtagだけじゃなくて、concatしたものも入れておく
+      p = {
+        :job => profile[:job],
+        :jobtag => profile[:jobtag]
+      }
+      job = HatarakiZakari::Job.new
+      job.update_worktime(p, params)
       redirect '/top'
     end
 
