@@ -8,7 +8,6 @@ module HatarakiZakari
       end
 
       def findKey(key)
-        #TODO keyはDataStoreのKeyStringのほうがいいかを検討
         AppEngine::Datastore::Key.from_path('User', key)
       end
 

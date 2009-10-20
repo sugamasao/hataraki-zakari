@@ -5,7 +5,6 @@ module HatarakiZakari
       def self.initialize
         @@model ||= new
       end
-      #TODO そもそもAppEngine::Datastore::**を省略できるように
 
       def find_keystring(params)
         Digest::MD5.new.update(params[:job].to_s + params[:jobtag].to_s).to_s

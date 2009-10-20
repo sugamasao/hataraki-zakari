@@ -17,7 +17,7 @@ module HatarakiZakari
     end
 
     def create_user(key, params)
-      p = { :name => params[:name]}
+      p = { :name => params[:name] }
       @user.create(key, params)
     end
 
@@ -26,7 +26,7 @@ module HatarakiZakari
       p = {
         :nickname => params[:nickname],
         :job => params[:job],
-        :jobtag => params[:jobtag]
+        :jobtag => params[:jobtag],
       }
       @user.update(key, p)
       @job.create(params)

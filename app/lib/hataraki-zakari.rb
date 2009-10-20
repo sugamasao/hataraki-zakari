@@ -4,6 +4,7 @@ require 'appengine-apis/datastore'
 require 'haml'
 require 'sass'
 require 'digest/md5'
+require 'rexml/document'
 
 require 'utils/logger'
 require 'com/google/appengine/api/users'
