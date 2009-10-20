@@ -1,15 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:chart="hataraki_zakari.component.chart.*" layout="absolute" applicationComplete="init()">
-	<chart:LineChart id="lineChart" />
-	<mx:Script>
-		<![CDATA[
+  <chart:LineChart id="lineChart"/>
+  <mx:Script><![CDATA[
 		import hataraki_zakari.utils.*;
+		import flash.net.URLLoader;
+		import flash.net.URLRequest;
+
+		private var loader:URLLoader = null;
+
 		private function init():void {
-		lineChart.draw();
-		Logger.info("HatarakiZakari init");
-
+			lineChart.draw();
+			Logger.info("HatarakiZakari init");
+			load();
 		}
-		]]>
-	</mx:Script>
-</mx:Application>
 
+		private function load():void {
+			//var url:String = "hataraki_01.xml";
+			var url:String = "http://localhost:4567/hataraki_01.xml";
+			var request:URLRequest = new URLRequest(url);
+			loader = new URLLoader();
+
+			try {
+				loader.load(request);
+			} catch (e:SecurityError) {
+				Logger.info("sec error");
+			}
+
+			loader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
+			loader.addEventListener(Event.COMPLETE, completeHandler);
+		}
+
+		private function ioErrorHandler(e:IOErrorEvent):void {
+			trace(e);
+		}
+
+		private function completeHandler(e:Event):void {
+			var xml:XML = new XML(loader.data)
+			trace("-----------------")
+			xml.legend
+			trace(xml)
+		}
+		
+	]]></mx:Script>
+</mx:Application>

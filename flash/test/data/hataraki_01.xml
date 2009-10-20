@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<hataraki-zakari>
+  <legend>働くの大好きっ子</legend>
+  <min-time>180</min-time>
+  <max-time>380</max-time>
+  <years>
+    <year>2009</year>
+    <month>1</month>
+    <time>180</time>
+    <comment>普通だったよ</comment>
+  </years>
+  <years>
+    <year>2009</year>
+    <month>2</month>
+    <time>380</time>
+    <comment>忙しかたっよ</comment>
+  </years>
+  <years>
+    <year>2009</year>
+    <month>3</month>
+    <time>200</time>
+    <comment>普通だったよ</comment>
+  </years>
+</hataraki-zakari>

@@ -70,6 +70,7 @@
 			<load-config filename="${APP_ROOT}/build/${APP_NAME}.xml"/>
 			<define name="CONFIG::DEBUG" value="true" />
 			<source-path path-element="${FLEX_HOME}/frameworks"/>
+			<incremental/><!-- キャッシュ入りビルドを有効に  -->
 		</mxmlc>
 	</target>
 

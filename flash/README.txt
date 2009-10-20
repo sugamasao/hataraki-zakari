@@ -24,3 +24,21 @@
  また、コードチェックで行うルールを独自に作成したい場合は下記でルールファイルを作成できます
  http://opensource.adobe.com/svn/opensource/flexpmd/bin/flex-pmd-ruleset-creator.html
 
+4. XML メモ
+* 働き時間
+	* 年
+		* 月
+		* 時間
+		* コメント
+	* 年
+		* 月
+		* 時間
+		* コメント
+	* 年
+		* 月
+		* 時間
+		* コメント
+* ユーザ情報（職業情報）
+* 最大の時間
+* 最小の時間
+

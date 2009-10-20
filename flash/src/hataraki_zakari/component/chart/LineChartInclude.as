@@ -70,7 +70,7 @@ private function foundDrawPoint(drawObj:UIComponent, baseX:uint, startY:uint, en
 	for(var i:uint = endY; i < startY; i++) {
 		//trace("bitmap.getPixel x =", baseX , " y =", i, " pixel=", bitmap.getPixel(baseX, i), "target_color =", DRAW_COLOR, "0.75=", 0xFFFFFF);
 		if(bitmap.getPixel(baseX, i) == DRAW_COLOR) {
-			trace("見つかったよ")
+			trace("")
 			resultPoint = new Point(baseX, i);
 			break;
 		}
