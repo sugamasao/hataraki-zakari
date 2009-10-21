@@ -3,8 +3,10 @@ require 'sinatra'
 
 get '/:filename' do
   xml = '<?xml version="1.0" encoding="utf-8"?>not found'
-  if File.file? params[:filename]
-    xml = File.read(params[:filename])
+  path = File.dirname(__FILE__) + '/' + params[:filename]
+  puts path
+  if File.file? path
+    xml = File.read(path)
   end
   content_type :xml
   xml
