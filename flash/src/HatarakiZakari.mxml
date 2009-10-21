@@ -1,45 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:chart="hataraki_zakari.component.chart.*" layout="absolute" applicationComplete="init()">
-  <chart:LineChart id="lineChart"/>
-  <mx:Script><![CDATA[
+	<chart:LineChart id="lineChart"/>
+	<mx:HTTPService 
+		id="httpService" 
+		url="http://localhost:4567/hataraki_01.xml" 
+		useProxy="false" 
+		method="GET" 
+		resultFormat="e4x" 
+		fault="httpServiceFault(event)" 
+		invoke="httpServiceInvoke(event)" 
+		result="httpServiceResult(event)" 
+	/>
+	<mx:Script><![CDATA[
 		import hataraki_zakari.utils.*;
-		import flash.net.URLLoader;
-		import flash.net.URLRequest;
+		import hataraki_zakari.entity.*;
+		import mx.rpc.events.*;
 
-		private var loader:URLLoader = null;
+		private function httpServiceFault(e:FaultEvent):void {
+			trace("httpService", e)
+		}
+		private function httpServiceInvoke(e:InvokeEvent):void {
+			trace("httpService", e)
+		}
+		private function httpServiceResult(e:ResultEvent):void {
+			var resultXML:XML = e.result as XML;
+			var chartEntity:LineChartEntity = new LineChartEntity();
+
+			chartEntity.legend = resultXML.legend;
+			chartEntity.minTime = Number(resultXML.minTime);
+			chartEntity.maxTime = Number(resultXML.maxTime);
+
+			var yearList:Array = [];
+			for each(var list:XML in resultXML.years) {
+				var year:Years = new Years;
+				year.year = uint(list.year)
+				year.month = uint(list.month)
+				year.time = Number(list.time)
+				year.comment = String(list.comment)
+				yearList.push(year);
+			}
+			chartEntity.years = yearList;
+		}
 
 		private function init():void {
 			lineChart.draw();
 			Logger.info("HatarakiZakari init");
-			load();
+
+			httpService.send();
 		}
-
-		private function load():void {
-			//var url:String = "hataraki_01.xml";
-			var url:String = "http://localhost:4567/hataraki_01.xml";
-			var request:URLRequest = new URLRequest(url);
-			loader = new URLLoader();
-
-			try {
-				loader.load(request);
-			} catch (e:SecurityError) {
-				Logger.info("sec error");
-			}
-
-			loader.addEventListener(IOErrorEvent.IO_ERROR, ioErrorHandler);
-			loader.addEventListener(Event.COMPLETE, completeHandler);
-		}
-
-		private function ioErrorHandler(e:IOErrorEvent):void {
-			trace(e);
-		}
-
-		private function completeHandler(e:Event):void {
-			var xml:XML = new XML(loader.data)
-			trace("-----------------")
-			xml.legend
-			trace(xml)
-		}
-		
 	]]></mx:Script>
 </mx:Application>
