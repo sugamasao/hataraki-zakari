@@ -1,18 +1,23 @@
 module HatarakiZakari
   class User
-    attr_accessor :model
-
     def initialize
       @user = HatarakiZakari::Models::User.initialize
       @worktime = HatarakiZakari::Models::WorkTime.initialize
+      @job = HatarakiZakari::Models::Job.initialize
     end
 
     def find_user(key)
-      @user.find(key)
+      user = @user.find(key)
+      p = {
+        :job => user[:job],
+        :jobtag => user[:jobtag]
+      }
+      job = @job.find(p)
+      return user
     end
 
     def create_user(key, params)
-      p = { :name => params[:name]}
+      p = { :name => params[:name] }
       @user.create(key, params)
     end
 
@@ -21,12 +26,14 @@ module HatarakiZakari
       p = {
         :nickname => params[:nickname],
         :job => params[:job],
-        :jobtag => params[:jobtag]
+        :jobtag => params[:jobtag],
       }
       @user.update(key, p)
+      @job.create(params)
     end
 
     def search_worktime(key)
+      #12か月のフィルタ条件を指定する
       @worktime.search(key, 'user')
     end
 
@@ -36,7 +43,8 @@ module HatarakiZakari
         :date => date,
         :worktime => params[:worktime]
       }
-      @worktime.create_or_update(key, p, 'user')
+      # TODO Modelのmethodの名称を統一する
+      @worktime.update_worktime_for_user(key, p)
     end
 
     #TODO validate
