@@ -3,6 +3,8 @@ import flash.geom.Point;
 import flash.display.Bitmap;
 import flash.display.BitmapData;
 
+import hataraki_zakari.entity.*;
+
 private static const BASE_Y_POINT:uint = 300;
 private static const BASE_X_WIDTH:uint = 100;
 private static const DRAW_COLOR:uint = 0xCCCC00;
@@ -11,17 +13,23 @@ private function init():void {
 	trace("init+++++++++++")
 }
 
-public function draw():void {
+public function draw(drawData:LineChartEntity):void {
 	trace("draw!!!!!!", "this.id=", this.id);
 	var array:Array = [100, 140, 200, 100];
 	var roundObject:UIComponent = new UIComponent();
 	roundObject.graphics.lineStyle(2, DRAW_COLOR, .75);
 
+	for each(var years:Years in drawData.years) {
+		trace("******", years.year)
+	}
+
 	this.addChild(roundObject);
 
 	this.graphics.lineStyle(3, DRAW_COLOR, 1.00);
-	drawChartLine(this as UIComponent, array);
-	drawChartPoint(this as UIComponent, array);
+	drawChartLine(this as UIComponent, drawData.years);
+	drawChartPoint(this as UIComponent, drawData.years);
+	//drawChartLine(this as UIComponent, array);
+	//drawChartPoint(this as UIComponent, array);
 }
 
 private function drawChartLine(drawObj:UIComponent, lineParam:Array):void {
@@ -30,11 +38,11 @@ private function drawChartLine(drawObj:UIComponent, lineParam:Array):void {
 		baseX += BASE_X_WIDTH;
 		//trace("drawChart ", baseX, BASE_Y_POINT - lineParam[i])
 		if(i == 0) {
-			drawObj.graphics.moveTo(baseX, BASE_Y_POINT - lineParam[i]);
+			drawObj.graphics.moveTo(baseX, BASE_Y_POINT - lineParam[i].time);
 		} else if (i == lineParam.length - 1) {
-			drawObj.graphics.curveTo(baseX, BASE_Y_POINT - lineParam[i], baseX, BASE_Y_POINT - lineParam[i]);
+			drawObj.graphics.curveTo(baseX, BASE_Y_POINT - lineParam[i].time, baseX, BASE_Y_POINT - lineParam[i].time);
 		} else {
-			drawObj.graphics.curveTo(baseX , BASE_Y_POINT - lineParam[i] , baseX + BASE_X_WIDTH, BASE_Y_POINT - lineParam[i+1]);
+			drawObj.graphics.curveTo(baseX , BASE_Y_POINT - lineParam[i].time , baseX + BASE_X_WIDTH, BASE_Y_POINT - lineParam[i+1].time);
 		}
 	}
 }
@@ -56,7 +64,7 @@ private function drawChartPoint(drawObj:UIComponent, lineParam:Array):void {
 			monthPoint.x = drawPoint.x;
 			monthPoint.y = drawPoint.y;
 			//monthPoint.buttonMode = true;
-			monthPoint.toolTip = "point = " + drawPoint.toString();
+			monthPoint.toolTip = lineParam[i].year + "/" + lineParam[i].month + "の思い出：\n" + lineParam[i].comment
 			drawObj.addChild(monthPoint);
 		}
 	}
