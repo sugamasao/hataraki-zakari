@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <hataraki-zakari>
   <legend>働くの大好きっ子</legend>
-  <min-time>180</min-time>
-  <max-time>380</max-time>
+  <min_time>180</min_time>
+  <max_time>380</max_time>
   <years>
     <year>2009</year>
     <month>1</month>
@@ -18,6 +18,60 @@
   <years>
     <year>2009</year>
     <month>3</month>
+    <time>200</time>
+    <comment>普通だったよ</comment>
+  </years>
+  <years>
+    <year>2009</year>
+    <month>4</month>
+    <time>200</time>
+    <comment>普通だったよ</comment>
+  </years>
+  <years>
+    <year>2009</year>
+    <month>5</month>
+    <time>200</time>
+    <comment>普通だったよ</comment>
+  </years>
+  <years>
+    <year>2009</year>
+    <month>6</month>
+    <time>200</time>
+    <comment>普通だったよ</comment>
+  </years>
+  <years>
+    <year>2009</year>
+    <month>7</month>
+    <time>200</time>
+    <comment>普通だったよ</comment>
+  </years>
+  <years>
+    <year>2009</year>
+    <month>8</month>
+    <time>200</time>
+    <comment>普通だったよ</comment>
+  </years>
+  <years>
+    <year>2009</year>
+    <month>9</month>
+    <time>200</time>
+    <comment>普通だったよ</comment>
+  </years>
+  <years>
+    <year>2009</year>
+    <month>10</month>
+    <time>200</time>
+    <comment>普通だったよ</comment>
+  </years>
+  <years>
+    <year>2009</year>
+    <month>11</month>
+    <time>200</time>
+    <comment>普通だったよ</comment>
+  </years>
+  <years>
+    <year>2009</year>
+    <month>12</month>
     <time>200</time>
     <comment>普通だったよ</comment>
   </years>

@@ -1,22 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<mx:Application
-	xmlns:mx="http://www.adobe.com/2006/mxml"
-	xmlns:chart="hataraki_zakari.component.chart.*"
-	layout="absolute"
-	applicationComplete="init()"
-	>
-	<chart:LineChart id="lineChart" />
-	<mx:HTTPService
-		id="httpService"
-		url="http://localhost:4567/hataraki_01.xml"
-		useProxy="false"
-		method="GET"
-		resultFormat="e4x"
-		fault="httpServiceFault(event)"
-		invoke="httpServiceInvoke(event)"
-		result="httpServiceResult(event)"
-	/>
-	<mx:Script><![CDATA[
+<mx:Application xmlns:mx="http://www.adobe.com/2006/mxml" xmlns:chart="hataraki_zakari.component.chart.*" layout="absolute" applicationComplete="init()">
+  <chart:LineChart id="lineChart"/>
+  <mx:HTTPService id="httpService" url="http://localhost:4567/hataraki_01.xml" useProxy="false" method="GET" resultFormat="e4x" fault="httpServiceFault(event)" invoke="httpServiceInvoke(event)" result="httpServiceResult(event)"/>
+  <mx:Script><![CDATA[
 		import hataraki_zakari.utils.*;
 		import hataraki_zakari.entity.*;
 		import mx.rpc.events.*;
@@ -32,8 +18,8 @@
 			var chartEntity:LineChartEntity = new LineChartEntity();
 
 			chartEntity.legend = resultXML.legend;
-			chartEntity.minTime = Number(resultXML.minTime);
-			chartEntity.maxTime = Number(resultXML.maxTime);
+			chartEntity.minTime = Number(resultXML.min_time);
+			chartEntity.maxTime = Number(resultXML.max_time);
 
 			var yearList:Array = [];
 			for each(var list:XML in resultXML.years) {

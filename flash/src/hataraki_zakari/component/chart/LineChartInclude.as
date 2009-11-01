@@ -5,45 +5,38 @@ import flash.display.BitmapData;
 
 import hataraki_zakari.entity.*;
 
-private static const BASE_Y_POINT:uint = 300;
-private static const BASE_X_WIDTH:uint = 100;
-private static const DRAW_COLOR:uint = 0xCCCC00;
+private var _base_point:Point = null; // 描画範囲の原点（左下）
+private var _base_width:uint = 0; // メモリの間隔（幅）
+private var _base_height:uint = 0; // メモリの間隔（高さ）
+private var _base_color:uint = 0x000000;
 
 private function init():void {
 	trace("init+++++++++++")
 }
 
 public function draw(drawData:LineChartEntity):void {
-	trace("draw!!!!!!", "this.id=", this.id);
-	var array:Array = [100, 140, 200, 100];
-	var roundObject:UIComponent = new UIComponent();
-	roundObject.graphics.lineStyle(2, DRAW_COLOR, .75);
+	_base_point = chartCanvas.localToGlobal(new Point(chartCanvas.x, chartCanvas.y + chartCanvas.height))
+	_base_width = chartCanvas.width / drawData.years.length;
+	_base_height = chartCanvas.height / (drawData.maxTime - drawData.minTime);
+	_base_color = 0xFF0000;
 
-	for each(var years:Years in drawData.years) {
-		trace("******", years.year)
-	}
-
-	this.addChild(roundObject);
-
-	this.graphics.lineStyle(3, DRAW_COLOR, 1.00);
-	drawChartLine(this as UIComponent, drawData.years);
-	drawChartPoint(this as UIComponent, drawData.years);
-	//drawChartLine(this as UIComponent, array);
-	//drawChartPoint(this as UIComponent, array);
+	chartCanvas.graphics.lineStyle(3, _base_color, 1.00);
+	drawChartLine(chartCanvas as UIComponent, drawData.years);
+	drawChartPoint(chartCanvas as UIComponent, drawData.years);
 }
 
 private function drawChartLine(drawObj:UIComponent, lineParam:Array):void {
 	var baseX:uint = 0;
 	for(var i:uint = 0; i < lineParam.length; i++) {
-		baseX += BASE_X_WIDTH;
-		//trace("drawChart ", baseX, BASE_Y_POINT - lineParam[i])
+		trace("lineParam ",baseX,  _base_point.y - lineParam[i].time)
 		if(i == 0) {
-			drawObj.graphics.moveTo(baseX, BASE_Y_POINT - lineParam[i].time);
+			drawObj.graphics.moveTo(baseX, _base_point.y - lineParam[i].time);
 		} else if (i == lineParam.length - 1) {
-			drawObj.graphics.curveTo(baseX, BASE_Y_POINT - lineParam[i].time, baseX, BASE_Y_POINT - lineParam[i].time);
+			drawObj.graphics.curveTo(baseX, _base_point.y - lineParam[i].time, baseX, _base_point.y - lineParam[i].time);
 		} else {
-			drawObj.graphics.curveTo(baseX , BASE_Y_POINT - lineParam[i].time , baseX + BASE_X_WIDTH, BASE_Y_POINT - lineParam[i+1].time);
+			drawObj.graphics.curveTo(baseX , _base_point.y - lineParam[i].time , baseX + _base_width ,_base_point.y - lineParam[i+1].time);
 		}
+		baseX += _base_width;
 	}
 }
 
@@ -52,32 +45,40 @@ private function drawChartPoint(drawObj:UIComponent, lineParam:Array):void {
 	var drawPoint:Point = new Point(0, 0);
 	trace("drawChartPoint")
 	for(var i:uint = 0; i < lineParam.length; i++) {
-		baseX += BASE_X_WIDTH;
-		drawPoint = foundDrawPoint(drawObj, baseX, BASE_Y_POINT, 0);
+		//baseX += _base_point.y;
+		// 前後 1px を探すので、最悪３回実施する
+		drawPoint = foundDrawPoint(drawObj, baseX);
+		if(drawPoint == null) {
+			drawPoint = foundDrawPoint(drawObj, baseX + 1);
+		}
+		if(drawPoint == null) {
+			drawPoint = foundDrawPoint(drawObj, baseX - 1);
+		}
 
 		if(drawPoint != null) {
-			trace("draw Point");
+			//trace("draw Point");
 			var monthPoint:UIComponent = new UIComponent();
-			monthPoint.graphics.lineStyle(3, DRAW_COLOR, 0.75);
-			monthPoint.graphics.beginFill(0x333333);
+			monthPoint.graphics.lineStyle(3, _base_color + 0x333333, 0.5);
+			monthPoint.graphics.beginFill(_base_color);
 			monthPoint.graphics.drawCircle(0, 0, 5);
 			monthPoint.x = drawPoint.x;
 			monthPoint.y = drawPoint.y;
 			//monthPoint.buttonMode = true;
 			monthPoint.toolTip = lineParam[i].year + "/" + lineParam[i].month + "の思い出：\n" + lineParam[i].comment
 			drawObj.addChild(monthPoint);
+			baseX += _base_width;
 		}
 	}
 }
 
-private function foundDrawPoint(drawObj:UIComponent, baseX:uint, startY:uint, endY:uint):Point {
+private function foundDrawPoint(drawObj:UIComponent, baseX:uint):Point {
 	var resultPoint:Point = null;
-	var bitmap:BitmapData = new BitmapData(this.width, this.height);
-	bitmap.draw(this);
+	trace("********", drawObj)
+	var bitmap:BitmapData = new BitmapData(drawObj.width, drawObj.height);
+	bitmap.draw(drawObj);
 
-	for(var i:uint = endY; i < startY; i++) {
-		//trace("bitmap.getPixel x =", baseX , " y =", i, " pixel=", bitmap.getPixel(baseX, i), "target_color =", DRAW_COLOR, "0.75=", 0xFFFFFF);
-		if(bitmap.getPixel(baseX, i) == DRAW_COLOR) {
+	for(var i:uint = 0; i < drawObj.height; i++) {
+		if(bitmap.getPixel(baseX, i) == _base_color) {
 			trace("")
 			resultPoint = new Point(baseX, i);
 			break;

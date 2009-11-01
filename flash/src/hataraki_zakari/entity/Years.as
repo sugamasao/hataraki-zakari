@@ -1,5 +1,4 @@
 package hataraki_zakari.entity {
-
 	public class Years {
 		private var _year:uint = 0;
 		private var _month:uint = 0;
