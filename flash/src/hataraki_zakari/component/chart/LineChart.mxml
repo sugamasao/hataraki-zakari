@@ -8,7 +8,8 @@
 		</mx:VBox>
 		<mx:VBox height="100%" width="90%">
 			<mx:Canvas id="chartCanvas" height="90%" width="100%"
-				borderStyle="solid" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10"
+				borderStyle="solid"
+				paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10"
 			/>
 			<mx:Canvas height="10%" width="100%">
 				<mx:Label text="縦軸" />
