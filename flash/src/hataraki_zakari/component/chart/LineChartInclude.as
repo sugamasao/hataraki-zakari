@@ -19,7 +19,7 @@ private function init():void {
 public function draw(drawData:LineChartEntity):void {
 	_base_point = chartCanvas.localToGlobal(new Point(chartCanvas.x, chartCanvas.y + chartCanvas.height))
 	 // スタートの余白はここでやれば良いお
-	_base_width = chartCanvas.width / drawData.years.length;
+	_base_width = chartCanvas.width / (drawData.years.length -  1);
 	_base_height = chartCanvas.height / (drawData.maxTime - drawData.minTime);
 	_base_color = 0xFF9999;
 	_minTime = drawData.minTime;
