@@ -12,6 +12,9 @@ private var _base_color:uint = 0x000000;
 
 private var _minTime:uint = 0;
 
+// ラインを描画する領域のマージン
+private var _margin:Number = 0.05;
+
 /**
  * creationComplete イベントハンドラ。
  * 画面に描画したタイミングでの初期化を行う。
@@ -27,14 +30,21 @@ private function onCreationComplete(event:Event):void {
 public function draw(drawData:LineChartEntity):void {
 	_base_point = chartCanvas.localToGlobal(new Point(chartCanvas.x, chartCanvas.y + chartCanvas.height))
 	 // スタートの余白はここでやれば良いお
-	_base_width = chartCanvas.width / (drawData.years.length -  1);
-	_base_height = chartCanvas.height / (drawData.maxTime - drawData.minTime);
+	_base_width = (chartCanvas.width - (chartCanvas.width * _margin* 2)) / (drawData.years.length -  1);
+	_base_height = (chartCanvas.height - (chartCanvas.height * _margin)) / (drawData.maxTime - drawData.minTime);
 	_base_color = 0xFF9999;
 	_minTime = drawData.minTime;
 
 	chartCanvas.graphics.lineStyle(3, _base_color, 1.00);
+
+	// ライン描画
 	drawChartLine(chartCanvas as UIComponent, drawData.years);
-	drawChartPoint(chartCanvas as UIComponent, drawData.years);
+	var drawPoints:Array = drawChartPoint(chartCanvas as UIComponent, drawData.years);
+
+	// 横軸描画
+	drawAbscissaAxis(abscissaAxis as UIComponent, drawPoints, drawData);
+	// 縦軸描画
+	drawOrdinateAxis(ordinateAxis as UIComponent, drawPoints, drawData);
 }
 
 /**
@@ -43,14 +53,14 @@ public function draw(drawData:LineChartEntity):void {
  * @lineParam 描画するデータ。LineChartYearsEntity型の配列
  */
 private function drawChartLine(drawObj:UIComponent, lineParam:Array):void {
-	var baseX:uint = 0;
+	var baseX:uint = drawObj.width * _margin;
 	for(var i:uint = 0; i < lineParam.length; i++) {
 		// 描画する Y 座標を計算する
-		var baseY:uint = _base_point.y - ((lineParam[i].time - _minTime) * _base_height);
+		var baseY:uint = _base_point.y - ((lineParam[i].time - _minTime + _base_height) * _base_height);
 		if(i == 0) {
 			drawObj.graphics.moveTo(baseX, baseY);
 		} else if (i == lineParam.length - 1) {
-			drawObj.graphics.curveTo(baseX, baseY, baseX, _base_point.y - ((lineParam[i].time - _minTime) * _base_height));
+			drawObj.graphics.curveTo(baseX, baseY, baseX, _base_point.y - ((lineParam[i].time - _minTime + _base_height) * _base_height));
 		} else {
 			drawObj.graphics.lineTo(baseX , baseY);
 		}
@@ -62,10 +72,12 @@ private function drawChartLine(drawObj:UIComponent, lineParam:Array):void {
  * チャート上にポイントを描画する
  * @param drawObj 描画する UIComponent
  * @param lineParam 描画するデータ。LineChartYearsEntity型の配列
+ * @return drawResultPoints Array(Point) 実際にポイントを打った座標の配列
  */
-private function drawChartPoint(drawObj:UIComponent, lineParam:Array):void {
-	var baseX:uint = 0;
+private function drawChartPoint(drawObj:UIComponent, lineParam:Array):Array {
+	var baseX:uint = drawObj.width * _margin;
 	var drawPoint:Point = new Point(0, 0);
+	var drawResultPoints:Array = [];
 	//trace("drawChartPoint")
 	for(var i:uint = 0; i < lineParam.length; i++) {
 		//baseX += _base_point.y;
@@ -90,8 +102,10 @@ private function drawChartPoint(drawObj:UIComponent, lineParam:Array):void {
 			monthPoint.toolTip = lineParam[i].year + "/" + lineParam[i].month + "の思い出：\n" + lineParam[i].comment
 			drawObj.addChild(monthPoint);
 			baseX += _base_width;
+			drawResultPoints.push(drawPoint);
 		}
 	}
+	return drawResultPoints;
 }
 
 /**
@@ -115,4 +129,39 @@ private function foundDrawPoint(drawObj:UIComponent, baseX:uint):Point {
 	}
 	return resultPoint;
 }
+
+/**
+ * 縦軸を描画する
+ * @param drawObj 描画領域
+ * @param drawPoints ラインの中で描画したポイントの座標
+ * @param 描画データ
+ */
+private function drawAbscissaAxis(drawObj:UIComponent, drawPoints:Array, drawData:LineChartEntity):void {
+	/*
+	for(var i:uint = 0; i < drawPoints.length; i++) {
+		var label:Label = new Label();
+		trace("*******", )
+		label.text = drawData.years[i].time;
+		drawObj.addChild(label);
+		label.y = drawPoints[i].y
+	}
+	*/
+}
+
+/**
+ * 横軸を描画する
+ * @param drawObj 描画領域
+ * @param drawPoints ラインの中で描画したポイントの座標
+ * @param 描画データ
+ */
+private function drawOrdinateAxis(drawObj:UIComponent, drawPoints:Array, drawData:LineChartEntity):void {
+	for(var i:uint = 0; i < drawPoints.length; i++) {
+		var label:Label = new Label();
+		label.text = (drawData.years[i].year.toString() + "/" + drawData.years[i].month.toString());
+		drawObj.addChild(label);
+		// だいたい真ん中になるようにあわせる
+		label.x = drawPoints[i].x - 25;
+	}
+}
+
 
