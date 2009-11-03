@@ -137,15 +137,61 @@ private function foundDrawPoint(drawObj:UIComponent, baseX:uint):Point {
  * @param 描画データ
  */
 private function drawAbscissaAxis(drawObj:UIComponent, drawPoints:Array, drawData:LineChartEntity):void {
-	/*
-	for(var i:uint = 0; i < drawPoints.length; i++) {
-		var label:Label = new Label();
-		trace("*******", )
-		label.text = drawData.years[i].time;
-		drawObj.addChild(label);
-		label.y = drawPoints[i].y
+	// ライン用描画設定
+	var rowLabelY:uint = _base_point.y - (drawData.minTime - _minTime + _base_height) * _base_height;
+	var highLabelY:uint = _base_point.y - (drawData.maxTime - _minTime + _base_height) * _base_height;
+	var rowPoint:Point = drawObj.localToGlobal(new Point(drawObj.width, rowLabelY));
+	var highPoint:Point = drawObj.localToGlobal(new Point(drawObj.width, highLabelY));
+	this.graphics.lineStyle(1, 0x333333, 0.5);
+	this.graphics.moveTo(rowPoint.x, rowPoint.y);
+	this.graphics.lineTo(parent.width, rowPoint.y);
+	this.graphics.moveTo(highPoint.x, highPoint.y);
+	this.graphics.lineTo(parent.width, highPoint.y);
+
+	var rowLabel:Label = new Label();
+	rowLabel.text = drawData.minTime.toString();
+	drawObj.addChild(rowLabel);
+	rowLabel.y = rowLabelY - 5; // 微調整
+
+	var highLabel:Label = new Label();
+	highLabel.text = drawData.maxTime.toString();
+	drawObj.addChild(highLabel);
+	highLabel.y = highLabelY - 5; // 微調整
+
+	var minTime:uint = drawData.minTime;
+	var maxTime:uint = drawData.maxTime;
+	var diffTime:uint = maxTime - minTime;
+	var upCount:uint = 0;
+
+	// メモリ線の間隔
+	if(diffTime < 10) {
+		upCount = 2;
+	} else if(diffTime < 50) {
+		upCount = 10;
+	} else if(diffTime < 100) {
+		upCount = 15;
+	} else if(diffTime < 200) {
+		upCount = 25;
+	} else if(diffTime < 300) {
+		upCount = 50;
+	} else {
+		upCount = 75;
 	}
-	*/
+
+	// メモリ線を描画する
+	for(var i:uint = minTime; i < maxTime; i++) {
+		if(i % upCount == 0) {
+			var pointY:uint = _base_point.y - (i - _minTime + _base_height) * _base_height;
+			var label:Label = new Label();
+			label.text = String(i);
+			drawObj.addChild(label);
+			label.y = pointY - 5;
+
+			var point:Point = drawObj.localToGlobal(new Point(drawObj.width, pointY));
+			this.graphics.moveTo(point.x, point.y);
+			this.graphics.lineTo(parent.width, point.y);
+		}
+	}
 }
 
 /**
