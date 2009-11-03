@@ -151,12 +151,12 @@ private function drawAbscissaAxis(drawObj:UIComponent, drawPoints:Array, drawDat
 	var rowLabel:Label = new Label();
 	rowLabel.text = drawData.minTime.toString();
 	drawObj.addChild(rowLabel);
-	rowLabel.y = rowLabelY - 5; // 微調整
+	rowLabel.y = rowLabelY - 10; // 微調整
 
 	var highLabel:Label = new Label();
 	highLabel.text = drawData.maxTime.toString();
 	drawObj.addChild(highLabel);
-	highLabel.y = highLabelY - 5; // 微調整
+	highLabel.y = highLabelY - 10; // 微調整
 
 	var minTime:uint = drawData.minTime;
 	var maxTime:uint = drawData.maxTime;
@@ -185,7 +185,7 @@ private function drawAbscissaAxis(drawObj:UIComponent, drawPoints:Array, drawDat
 			var label:Label = new Label();
 			label.text = String(i);
 			drawObj.addChild(label);
-			label.y = pointY - 5;
+			label.y = pointY - 10;
 
 			var point:Point = drawObj.localToGlobal(new Point(drawObj.width, pointY));
 			this.graphics.moveTo(point.x, point.y);
