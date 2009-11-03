@@ -40,19 +40,19 @@ public function draw(drawData:LineChartEntity):void {
 /**
  * チャートを描画する
  * @drawObj 描画対象領域
- * @lineParam 描画するデータ。Year型の配列
+ * @lineParam 描画するデータ。LineChartYearsEntity型の配列
  */
 private function drawChartLine(drawObj:UIComponent, lineParam:Array):void {
 	var baseX:uint = 0;
 	for(var i:uint = 0; i < lineParam.length; i++) {
-		trace("lineParam ",baseX,  ((lineParam[i].time - _minTime) * _base_height))
+		// 描画する Y 座標を計算する
+		var baseY:uint = _base_point.y - ((lineParam[i].time - _minTime) * _base_height);
 		if(i == 0) {
-			drawObj.graphics.moveTo(baseX, _base_point.y - ((lineParam[i].time - _minTime) * _base_height));
+			drawObj.graphics.moveTo(baseX, baseY);
 		} else if (i == lineParam.length - 1) {
-			drawObj.graphics.curveTo(baseX, _base_point.y - ((lineParam[i].time - _minTime) * _base_height), baseX, _base_point.y - ((lineParam[i].time - _minTime) * _base_height));
+			drawObj.graphics.curveTo(baseX, baseY, baseX, _base_point.y - ((lineParam[i].time - _minTime) * _base_height));
 		} else {
-			//drawObj.graphics.curveTo(baseX , _base_point.y - ((lineParam[i].time - _minTime) * _base_height) , baseX + _base_width ,_base_point.y - ((lineParam[i+1].time- _minTime) * _base_height));
-			drawObj.graphics.lineTo(baseX , _base_point.y - ((lineParam[i].time - _minTime) * _base_height));
+			drawObj.graphics.lineTo(baseX , baseY);
 		}
 		baseX += _base_width;
 	}
@@ -61,7 +61,7 @@ private function drawChartLine(drawObj:UIComponent, lineParam:Array):void {
 /**
  * チャート上にポイントを描画する
  * @param drawObj 描画する UIComponent
- * @param lineParam 描画するデータ。Year型の配列
+ * @param lineParam 描画するデータ。LineChartYearsEntity型の配列
  */
 private function drawChartPoint(drawObj:UIComponent, lineParam:Array):void {
 	var baseX:uint = 0;

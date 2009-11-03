@@ -1,11 +1,11 @@
 package hataraki_zakari.entity {
-	public class Years {
+	public class LineChartYearsEntity {
 		private var _year:uint = 0;
 		private var _month:uint = 0;
 		private var _time:Number = 0;
 		private var _comment:String = "";
 
-		public function Years() {
+		public function LineChartYearsEntity() {
 		}
 
 		public function set year(val:uint):void {

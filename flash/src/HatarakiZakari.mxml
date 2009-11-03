@@ -23,7 +23,7 @@
 
 			var yearList:Array = [];
 			for each(var list:XML in resultXML.years) {
-				var year:Years = new Years;
+				var year:LineChartYearsEntity = new LineChartYearsEntity();
 				year.year = uint(list.year)
 				year.month = uint(list.month)
 				year.time = Number(list.time)

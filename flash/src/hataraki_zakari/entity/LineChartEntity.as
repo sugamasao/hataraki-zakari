@@ -5,7 +5,7 @@ package hataraki_zakari.entity {
 		private var _legend:String = "";
 		private var _minTime:Number = 0;
 		private var _maxTime:Number = 0;
-		[ArrayElementType("Years")] 
+		[ArrayElementType("LineChartYearsEntity")] 
 		private var _years:Array = [];
 		
 		public function LineChartEntity() {
