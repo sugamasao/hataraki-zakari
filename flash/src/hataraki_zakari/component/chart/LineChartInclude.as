@@ -21,6 +21,9 @@ private var _margin:Number = 0.05;
  */
 private function onCreationComplete(event:Event):void {
 	trace("onCreationComplete", event);
+
+	//TODO legend にドラッグさせるようにする
+
 }
 
 /**

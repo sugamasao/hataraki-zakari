@@ -1,18 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <mx:Canvas xmlns:mx="http://www.adobe.com/2006/mxml" creationComplete="onCreationComplete(event)" width="100%" height="100%">
-  <mx:HBox height="100%" width="100%">
-    <mx:VBox height="100%" width="10%">
-      <mx:Canvas id="abscissaAxis" height="100%" width="100%">
-        <!--"縦軸"-->
-      </mx:Canvas>
-    </mx:VBox>
-    <mx:VBox height="100%" width="90%">
-      <mx:Canvas id="chartCanvas" height="90%" width="100%" borderStyle="solid" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10"/>
-      <mx:Canvas id="ordinateAxis" height="10%" width="100%">
-        <!-- "横軸" -->
-		<mx:Label />
-      </mx:Canvas>
-    </mx:VBox>
-  </mx:HBox>
-  <mx:Script source="LineChartInclude.as"/>
+	<mx:HBox height="100%" width="100%">
+		<!--"縦軸"-->
+		<mx:Canvas id="abscissaAxis" height="100%" width="10%" />
+		<mx:VBox height="100%" width="90%">
+			<mx:Canvas id="chartCanvas" height="90%" width="100%" borderStyle="solid" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10"/>
+			<mx:Canvas id="ordinateAxis" height="10%" width="100%">
+			<!-- "横軸" -->
+			<mx:Label />
+			</mx:Canvas>
+		</mx:VBox>
+	</mx:HBox>
+	<mx:Canvas id="legend" height="15%" width="15%" borderStyle="solid" paddingTop="10" paddingBottom="10" paddingLeft="10" paddingRight="10">
+	</mx:Canvas>
+	<mx:Script source="LineChartInclude.as"/>
 </mx:Canvas>
