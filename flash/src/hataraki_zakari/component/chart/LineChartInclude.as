@@ -12,10 +12,18 @@ private var _base_color:uint = 0x000000;
 
 private var _minTime:uint = 0;
 
-private function init():void {
-	trace("init+++++++++++")
+/**
+ * creationComplete イベントハンドラ。
+ * 画面に描画したタイミングでの初期化を行う。
+ */
+private function onCreationComplete(event:Event):void {
+	trace("onCreationComplete", event);
 }
 
+/**
+ * チャートに描画する
+ * @param drawData 描画データ。LineChartEntity
+ */
 public function draw(drawData:LineChartEntity):void {
 	_base_point = chartCanvas.localToGlobal(new Point(chartCanvas.x, chartCanvas.y + chartCanvas.height))
 	 // スタートの余白はここでやれば良いお
@@ -29,6 +37,11 @@ public function draw(drawData:LineChartEntity):void {
 	drawChartPoint(chartCanvas as UIComponent, drawData.years);
 }
 
+/**
+ * チャートを描画する
+ * @drawObj 描画対象領域
+ * @lineParam 描画するデータ。Year型の配列
+ */
 private function drawChartLine(drawObj:UIComponent, lineParam:Array):void {
 	var baseX:uint = 0;
 	for(var i:uint = 0; i < lineParam.length; i++) {
@@ -45,6 +58,11 @@ private function drawChartLine(drawObj:UIComponent, lineParam:Array):void {
 	}
 }
 
+/**
+ * チャート上にポイントを描画する
+ * @param drawObj 描画する UIComponent
+ * @param lineParam 描画するデータ。Year型の配列
+ */
 private function drawChartPoint(drawObj:UIComponent, lineParam:Array):void {
 	var baseX:uint = 0;
 	var drawPoint:Point = new Point(0, 0);
@@ -63,7 +81,7 @@ private function drawChartPoint(drawObj:UIComponent, lineParam:Array):void {
 		if(drawPoint != null) {
 			//trace("draw Point");
 			var monthPoint:UIComponent = new UIComponent();
-			monthPoint.graphics.lineStyle(3, _base_color + 0x333333, 0.5);
+			monthPoint.graphics.lineStyle(3, _base_color * 1.25 , 0.5);
 			monthPoint.graphics.beginFill(_base_color);
 			monthPoint.graphics.drawCircle(0, 0, 5);
 			monthPoint.x = drawPoint.x;
@@ -76,6 +94,13 @@ private function drawChartPoint(drawObj:UIComponent, lineParam:Array):void {
 	}
 }
 
+/**
+ * チャート上に打つポイントを描画する座標を探する
+ * baseX を元に、 Y 座標をシーケンシャルに探す
+ * @param drawObj 探索するUIComponent
+ * @param baseX 探索する X 座標
+ * @return Point 見つかった座標。見つからなかった場合は null を返す
+ */
 private function foundDrawPoint(drawObj:UIComponent, baseX:uint):Point {
 	var resultPoint:Point = null;
 	//trace("********", drawObj)
